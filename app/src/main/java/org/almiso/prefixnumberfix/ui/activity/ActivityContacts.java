@@ -3,6 +3,7 @@ package org.almiso.prefixnumberfix.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,9 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.almiso.prefixnumberfix.R;
+import org.almiso.prefixnumberfix.core.ContactsController;
+import org.almiso.prefixnumberfix.model.Contact;
 import org.almiso.prefixnumberfix.ui.cell.ContactCell;
 import org.almiso.prefixnumberfix.ui.cell.EmptyCell;
 import org.almiso.prefixnumberfix.ui.cell.base.Holder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Alexandr on 07.06.16.
@@ -28,6 +34,8 @@ public class ActivityContacts extends AppCompatActivity {
     /* Fields */
     private int rowCount = 0;
     private int emptyContactsRow;
+
+    private HashMap<Integer, Contact> contacts = new HashMap<>();
 
     @Override
     public void onResume() {
@@ -62,10 +70,19 @@ public class ActivityContacts extends AppCompatActivity {
     }
 
     private void updateRowsIds() {
+        contacts.clear();
+
         rowCount = 0;
         emptyContactsRow = -1;
 
-        emptyContactsRow = rowCount++;
+//        emptyContactsRow = rowCount++;
+
+        HashMap<Integer,Contact> mapFromBook  = ContactsController.getInstance().getContactsBook();
+
+        for (Map.Entry<Integer,Contact> entry : mapFromBook.entrySet()) {
+            contacts.put(rowCount++, entry.getValue());
+        }
+
     }
 
     private class UiAdapter extends RecyclerView.Adapter {
@@ -94,6 +111,8 @@ public class ActivityContacts extends AppCompatActivity {
                 view = new EmptyCell(context);
             } else if (viewType == 1) {
                 view = new ContactCell(context);
+            }else if (viewType == 2) {
+                view = new ContactCell(context);
             }
 
 
@@ -107,7 +126,7 @@ public class ActivityContacts extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-            if (holder.getItemViewType() == 1) {
+            if (holder.getItemViewType() == 2) {
                 ContactCell contactCell = (ContactCell) holder.itemView;
 
             }
@@ -119,6 +138,8 @@ public class ActivityContacts extends AppCompatActivity {
         public int getItemViewType(int position) {
             if (position == emptyContactsRow) {
                 return 1;
+            } else if(contacts.containsKey(position)){
+                return 2;
             }
 
             return 0;

@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Prefix Number Fix</string>
     <string name="action_settings">Settings</string>
+
+    <!--contact info view-->
+    <string name="st_phone_home">Home</string>
+    <string name="st_phone_mobile">Mobile</string>
+    <string name="st_phone_work">Work</string>
+    <string name="st_phone_otherr">Other</string>
+    <string name="st_phone_main">Main</string>
+
 </resources>

@@ -22,5 +22,8 @@ public class PrefixNumberApplication extends Application {
         applicationContext = getApplicationContext();
         application = (PrefixNumberApplication) getApplicationContext();
         applicationHandler = new Handler(applicationContext.getMainLooper());
+
+
+        ContactsController.getInstance();
     }
 }
